@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 import { withFirebase } from "../Firebase/context";
 
 const INITIAL_STATE = {
@@ -13,22 +13,74 @@ const TEST_DATA = [
     { maid: ["Ririka"], maid_cafe: "Crescendo", date: "2021-02-16" },
 ];
 
-const ChekiListItem = ({ maid, maid_cafe, date }) => (
-    <li>{maid.join(", ")} @ {maid_cafe} -- {date}</li>
-);
+const ChekiListItem = (props) => {
+    console.log('render cheki list item', props)
+    const { maid, maid_cafe, date, is_2shot, received } = props;
+    const _ITEM = () => (
+        <span>
+            {(is_2shot) ? '[2shot]' : ''}
+            {maid.join(", ")} @ {maid_cafe} -- {date}
+        </span>
+    );
 
-class ChekiListBase extends Component {
+    return (
+        <li>
+            {received ?
+                <del><_ITEM /></del> : <_ITEM />}
+        </li>
+    );
+}
+
+const ChekiListBase = ({ firebase }) => {
+    const LIMIT = 10;
+    const initQuery = firebase.firestore.collection("test_user").orderBy("date", "desc").limit(LIMIT);
+    const [query, setQuery] = useState(initQuery);
+    const [docs, setDocs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        console.log('querying...');
+        setLoading(true);
+        query.get().then(snapshots => {
+            //console.log({docs: snapshots.docs.map(doc => doc.data())});
+            setDocs(snapshots.docs.map(doc => doc.data()));
+            setLoading(false);
+        });
+    }, [query]);
+
+    return (
+        <div>
+            {
+                loading ? 'loading...' :
+                    (
+                        <ul>
+                            {
+                                docs.map(({ maid, maid_cafe, date, is_2shot, received }) => (
+                                    <ChekiListItem
+                                        maid={maid}
+                                        maid_cafe={maid_cafe}
+                                        date={date}
+                                        is_2shot={is_2shot}
+                                        received={received}
+                                    />
+                                ))
+                            }
+                        </ul>
+                    )
+            }
+        </div>
+    )
+}
+
+class _ChekiListBase extends Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
     }
 
-    _render() {
-        return (<h2>Cheki List</h2>);
-    }
-
     componentDidMount() {
-        const query = this.props.firebase.db.collection("test_user").orderBy("date", "desc").limit(this.state.limit);
+        const query = this.props.firebase.firestore.collection("test_user").orderBy("date", "desc").limit(this.state.limit);
         query.get().then((snapshots) => {
             this.setState({ docs: snapshots.docs.map(doc => doc.data()) });
         })
@@ -66,6 +118,7 @@ class ChekiListBase extends Component {
         );
     }
 }
+
 const ChekiList = withFirebase(ChekiListBase);
 
 export default ChekiList;

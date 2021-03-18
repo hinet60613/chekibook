@@ -1,12 +1,67 @@
-import React from 'react';
-import ChekiList, { ChekiListBase } from '../ChekiList';
+import React, { useEffect, useState } from 'react';
+import ChekiList from '../ChekiList';
+import { withFirebase } from '../Firebase';
 import NewChekiForm from '../NewCheki';
-const App = () => (
-    <div>
-        <h1>Hello World!</h1>
-        <NewChekiForm />
-        <ChekiList />
-    </div>
-)
+
+
+const AppWithAuthBase = ({ firebase }) => {
+    const handleSignOutClick = () => {
+        firebase.auth().signOut()
+            .then(() => {
+                window.location.href = "/";
+            }).catch(console.log)
+    }
+
+    return (
+        <div>
+            <h2>Hello {firebase.auth.currentUser.displayName}!</h2>
+            <button onClick={handleSignOutClick}>Sign Out</button>
+            <NewChekiForm />
+            <ChekiList />
+        </div>
+    );
+}
+
+const AppWithAuth = withFirebase(AppWithAuthBase);
+
+const AppWithNoAuthBase = ({ firebase }) => {
+    const handleSignInClick = () => {
+        firebase.auth.signInWithPopup(firebase.GoogleAuthProvider)
+            .then(result => result.user.getIdToken(true))
+            .then((idToken) => {
+                if (idToken) {
+                    window.location.href = '/';
+                }
+            });
+    }
+    return (
+
+        <div>
+            <h1>Hello!</h1>
+        Please <button onClick={handleSignInClick}>sign in.</button>
+
+        </div>
+    );
+}
+
+const AppWithNoAuth = withFirebase(AppWithNoAuthBase);
+
+const AppBase = ({ firebase }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+    useEffect(() => {
+        console.log("AppBase check onAuthStateChanged");
+        const unListen = firebase.auth.onAuthStateChanged(
+            authUser => {
+                authUser ?
+                    setCurrentUser(authUser) :
+                    setCurrentUser(null)
+            }
+        );
+        return () => { unListen(); }
+    }, [firebase.auth.currentUser]);
+    return ((currentUser) ? <AppWithAuth /> : <AppWithNoAuth />);
+}
+
+const App = withFirebase(AppBase);
 
 export default App;
