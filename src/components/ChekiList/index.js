@@ -31,7 +31,7 @@ const ChekiListItem = (props) => {
     });
     const classes = useStyles();
     return (
-        <Card className={classes.root} elevation={received ? 1 : 4}>
+        <Card className={classes.root} elevation={4}>
             <CardContent>
                 <Typography className={classes.title} color="textSecondary">
                     {date}
