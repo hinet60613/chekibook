@@ -1,5 +1,7 @@
+import { Paper } from '@material-ui/core';
 import { useState } from "react";
 import { withFirebase } from "../Firebase";
+
 
 const INITIAL_STATE = {
     maid: '',
@@ -49,7 +51,7 @@ const NewChekiFormBase = ({ firebase }) => {
     const isInvalid = (maid === '' || maid_cafe === '' || date === '');
 
     return (
-        <div>
+        <Paper elevation={1}>
             <h3>Add new cheki.</h3>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -91,7 +93,7 @@ const NewChekiFormBase = ({ firebase }) => {
                     Add new cheki
                 </button>
             </form>
-        </div >
+        </Paper>
     );
 
 }
