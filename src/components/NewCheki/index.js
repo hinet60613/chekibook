@@ -18,6 +18,14 @@ const NewChekiFormBase = ({ firebase }) => {
             [event.target.name]: event.target.value,
         });
     }
+
+    const handleMaidNameChange = (event) => {
+        setInputData(prevData => ({
+            ...prevData,
+            maid: event.target.value.split(',')
+        }));
+    }
+
     const handleCheckboxToggle = (event) => {
         console.log({ target: event.target });
         setInputData({
@@ -67,7 +75,7 @@ const NewChekiFormBase = ({ firebase }) => {
                     <input
                         type="text"
                         name="maid"
-                        onChange={handleChange}
+                        onChange={handleMaidNameChange}
                         placeholder="Maid"
                     />
                 </div>
