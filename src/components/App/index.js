@@ -47,9 +47,8 @@ const AppWithNoAuthBase = ({ firebase }) => {
 const AppWithNoAuth = withFirebase(AppWithNoAuthBase);
 
 const AppBase = ({ firebase }) => {
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(firebase.auth.currentUser);
     useEffect(() => {
-        console.log("AppBase check onAuthStateChanged");
         const unListen = firebase.auth.onAuthStateChanged(
             authUser => {
                 authUser ?
