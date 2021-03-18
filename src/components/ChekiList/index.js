@@ -43,6 +43,7 @@ const ChekiListItem = (props) => {
                     {maid_cafe}
                 </Typography>
                 {is_2shot ? <Chip label="2shot" /> : ''}
+                {received ? <Chip color="primary" variant="outlined" label="Received" /> : ''}
             </CardContent>
         </Card>
     );
