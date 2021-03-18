@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import ChekiList from '../ChekiList';
 import { withFirebase } from '../Firebase';
 import NewChekiForm from '../NewCheki';
+import Protected from '../Protected';
 
 
 const AppWithAuthBase = ({ firebase }) => {
     const handleSignOutClick = () => {
-        firebase.auth().signOut()
+        firebase.auth.signOut()
             .then(() => {
                 window.location.href = "/";
             }).catch(console.log)
@@ -58,7 +59,8 @@ const AppBase = ({ firebase }) => {
         );
         return () => { unListen(); }
     }, [firebase.auth.currentUser]);
-    return ((currentUser) ? <AppWithAuth /> : <AppWithNoAuth />);
+    //return ((currentUser) ? <AppWithAuth /> : <AppWithNoAuth />);
+    return <Protected user={currentUser} render={AppWithAuth} fail={AppWithNoAuth} />;
 }
 
 const App = withFirebase(AppBase);
