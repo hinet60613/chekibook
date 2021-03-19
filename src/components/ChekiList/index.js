@@ -100,7 +100,7 @@ const ChekiList = ({ docs }) => {
 }
 
 const ChekiPageBase = ({ firebase }) => {
-    const LIMIT = 10;
+    const LIMIT = 30;
     const uid = firebase.auth.currentUser.uid;
     const initQuery = firebase.firestore.collection(uid).orderBy("date", "desc").limit(LIMIT);
     const [query, setQuery] = useState(initQuery);
@@ -109,11 +109,19 @@ const ChekiPageBase = ({ firebase }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        query.get().then(snapshots => {
-            setDocs(snapshots.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const unsubscribe = query.onSnapshot(snapshots => {
+            setDocs(
+                snapshots.docs.map(
+                    doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })
+                )
+            );
             setLoading(false);
-        });
-    }, [loading, query]);
+        })
+        return () => unsubscribe();
+    }, []);
 
     return (
         <Paper>
