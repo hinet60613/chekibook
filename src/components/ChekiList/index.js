@@ -58,10 +58,9 @@ const ChekiListItem = (props) => {
 
                 <Typography className={classes.maidName} variant="h5" component="h2">
                     {maid.join(", ")}
+                    {is_2shot ? <Chip label="2shot" /> : ''}
+                    {received ? <Chip color="primary" variant="outlined" label="Received" /> : ''}
                 </Typography>
-
-                {is_2shot ? <Chip label="2shot" /> : ''}
-                {received ? <Chip color="primary" variant="outlined" label="Received" /> : ''}
             </CardContent>
         </Card>
     );
