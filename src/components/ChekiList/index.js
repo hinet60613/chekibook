@@ -38,7 +38,9 @@ const ChekiListItem = (props) => {
             marginBottom: 12,
         },
         maidName: {
-            textAlign: "center",
+            marginTop: -32,
+            marginRight: 12,
+            textAlign: "right",
         }
     });
     const classes = useStyles();
@@ -46,7 +48,7 @@ const ChekiListItem = (props) => {
         <Card className={classes.root} elevation={4}>
             <CardContent className={classes.cardContent}>
                 <Typography className={classes.title} color="textSecondary">
-                    {maid_cafe} /{date}
+                    {maid_cafe}
                 </Typography>
                 <CardMedia
                     className={classes.cardMedia}
@@ -54,12 +56,14 @@ const ChekiListItem = (props) => {
                     alt="mock cheki image"
                     width={160}
                     height={214}
-                    image="https://dummyimage.com/160x214/dddddd/c1c1c1.jpg" />
-
+                    image="https://dummyimage.com/160x214/aaaaaa/c1c1c1.jpg" />
                 <Typography className={classes.maidName} variant="h5" component="h2">
+                    {received ? <Chip color="primary" variant="outlined" label="Received" size="small" /> : ''}
+                    {is_2shot ? <Chip label="2shot" size="small" /> : ''}
                     {maid.join(", ")}
-                    {is_2shot ? <Chip label="2shot" /> : ''}
-                    {received ? <Chip color="primary" variant="outlined" label="Received" /> : ''}
+                </Typography>
+                <Typography className={classes.title}>
+                    {date}
                 </Typography>
             </CardContent>
         </Card>
