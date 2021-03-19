@@ -19,8 +19,8 @@ const ChekiListItem = (props) => {
     const useStyles = makeStyles({
         root: {
             margin: 2,
-            width: 220,
-            height: 340,
+            width: 176,
+            height: 272,
         },
         title: {
             fontSize: 14,
