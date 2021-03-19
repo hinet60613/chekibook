@@ -1,4 +1,4 @@
-import { Paper, Card, CardContent, makeStyles, Typography, Chip } from "@material-ui/core";
+import { Paper, Card, CardContent, makeStyles, Typography, Chip, CardMedia } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { withFirebase } from "../Firebase/context";
 
@@ -22,26 +22,44 @@ const ChekiListItem = (props) => {
             width: 176,
             height: 272,
         },
+        cardContent: {
+            padding: 0,
+        },
+        cardMedia: {
+            width: 160,
+            paddingLeft: 8,
+            paddingRight: 8,
+        },
         title: {
             fontSize: 14,
+            textAlign: "center",
         },
         pos: {
             marginBottom: 12,
         },
+        maidName: {
+            textAlign: "center",
+        }
     });
     const classes = useStyles();
     return (
         <Card className={classes.root} elevation={4}>
-            <CardContent>
+            <CardContent className={classes.cardContent}>
                 <Typography className={classes.title} color="textSecondary">
-                    {date}
+                    {maid_cafe} /{date}
                 </Typography>
-                <Typography variant="h5" component="h2">
+                <CardMedia
+                    className={classes.cardMedia}
+                    component="img"
+                    alt="mock cheki image"
+                    width={160}
+                    height={214}
+                    image="https://dummyimage.com/160x214/dddddd/c1c1c1.jpg" />
+
+                <Typography className={classes.maidName} variant="h5" component="h2">
                     {maid.join(", ")}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                    {maid_cafe}
-                </Typography>
+
                 {is_2shot ? <Chip label="2shot" /> : ''}
                 {received ? <Chip color="primary" variant="outlined" label="Received" /> : ''}
             </CardContent>
