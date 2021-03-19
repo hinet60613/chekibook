@@ -106,7 +106,6 @@ const ChekiPageBase = ({ firebase }) => {
     const [query, setQuery] = useState(initQuery);
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const unsubscribe = query.onSnapshot(snapshots => {
