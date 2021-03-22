@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core';
+import { Paper, TextField } from '@material-ui/core';
 import { useState } from "react";
 import { withFirebase } from "../Firebase";
 
@@ -24,7 +24,7 @@ const NewChekiFormBase = ({ firebase }) => {
     const handleMaidNameChange = (event) => {
         setInputData(prevData => ({
             ...prevData,
-            maid: event.target.value.split(',')
+            maid: event.target.value.split(/\s*,\s*/)
         }));
     }
 
@@ -64,21 +64,17 @@ const NewChekiFormBase = ({ firebase }) => {
                     />
                 </div>
                 <div>
-                    <label>Maid Cafe</label>
-                    <input
-                        type="text"
+                    <TextField
                         name="maid_cafe"
+                        label="Maid Cafe"
                         onChange={handleChange}
-                        placeholder="Maid Cafe"
                     />
                 </div>
                 <div>
-                    <label>Maid Name</label>
-                    <input
-                        type="text"
-                        name="maid"
+                    <TextField
+                        id="maid"
+                        label="Maid Name"
                         onChange={handleMaidNameChange}
-                        placeholder="Maid"
                     />
                 </div>
                 <div>
