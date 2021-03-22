@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # firebase settings
-firebase*
+firebase.json
 firestore*
 .firebase*
