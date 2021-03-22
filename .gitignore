@@ -29,3 +29,4 @@ firestore*
 
 # avoid commit Firebase config file.
 src/constants/config.js
+/src/constants/config.js
