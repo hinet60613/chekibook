@@ -9,6 +9,7 @@ class Firebase {
         this.GoogleAuthProvider = new app.auth.GoogleAuthProvider();
         this.auth = app.auth();
         this.firestore = app.firestore();
+        this.FieldValue = app.firestore.FieldValue;
     }
 }
 
