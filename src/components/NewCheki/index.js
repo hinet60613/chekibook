@@ -39,11 +39,13 @@ const NewChekiFormBase = ({ firebase }) => {
     const handleSubmit = (e) => {
         console.log('submit new cheki', { ...inputData });
         const checkiCollection = firebase.firestore.collection(firebase.auth.currentUser.uid);
-        checkiCollection.add(inputData)
-            .then((docRef) => {
-                console.log("new data added.", { docRef });
-            })
-            .catch(console.log);
+        checkiCollection.add({
+            ...inputData,
+            created_time: firebase.FieldValue.serverTimestamp(),
+        }).then((docRef) => {
+            console.log("new data added.", { docRef });
+        }).catch(console.log);
+
         e.preventDefault();
     }
 
