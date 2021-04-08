@@ -14,7 +14,7 @@ const TEST_DATA = [
     { maid: ["Ririka"], maid_cafe: "Crescendo", date: "2021-02-16" },
 ];
 
-const ChekiListItem = (props) => {
+const Cheki = (props) => {
     const { maid, maid_cafe, date, is_2shot, received } = props;
     const useStyles = makeStyles({
         root: {
@@ -84,7 +84,7 @@ const ChekiList = ({ docs }) => {
                 docs.map(doc => {
                     const { id, maid, maid_cafe, date, is_2shot, received } = doc;
                     return (
-                        <ChekiListItem
+                        <Cheki
                             key={id}
                             maid={maid}
                             maid_cafe={maid_cafe}
