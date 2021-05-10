@@ -1,4 +1,4 @@
-import { Paper, Card, CardContent, makeStyles, Typography, Chip, CardMedia } from "@material-ui/core";
+import { Paper, Card, CardContent, makeStyles, Typography, Chip, CardMedia, CardActions, Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { withFirebase } from "../Firebase/context";
 
@@ -41,6 +41,9 @@ const Cheki = (props) => {
             marginTop: -32,
             marginRight: 12,
             textAlign: "right",
+        },
+        cardActions: {
+            marginTop: -16,
         }
     });
     const classes = useStyles();
@@ -66,6 +69,10 @@ const Cheki = (props) => {
                     {date}
                 </Typography>
             </CardContent>
+            <CardActions className={classes.cardActions}>
+                <Button size="small">Received</Button>
+                <Button size="small">Delete</Button>
+            </CardActions>
         </Card>
     );
 }
