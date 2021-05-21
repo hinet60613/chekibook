@@ -2,6 +2,8 @@ import { Paper, Card, CardContent, makeStyles, Typography, Chip, CardMedia, Card
 import { useEffect, useState } from "react";
 import { withFirebase } from "../Firebase/context";
 
+import mock_photo from './mock_photo.svg';
+
 const INITIAL_STATE = {
     docs: [],
     limit: 10,
@@ -59,7 +61,7 @@ const Cheki = (props) => {
                     alt="mock cheki image"
                     width={160}
                     height={214}
-                    image="https://dummyimage.com/160x214/aaaaaa/c1c1c1.jpg" />
+                    image={mock_photo} />
                 <Typography className={classes.maidName} variant="h5" component="h2">
                     {received ? <Chip color="primary" variant="outlined" label="Received" size="small" /> : ''}
                     {is_2shot ? <Chip label="2shot" size="small" /> : ''}
@@ -109,7 +111,8 @@ const ChekiList = ({ docs }) => {
 const ChekiPageBase = ({ firebase }) => {
     const LIMIT = 30;
     const uid = firebase.auth.currentUser.uid;
-    const initQuery = firebase.firestore.collection(uid).orderBy("date", "desc").limit(LIMIT);
+    const ref = firebase.firestore.collection(uid);
+    const initQuery = ref.orderBy("date", "desc").limit(LIMIT);
     const [query, setQuery] = useState(initQuery);
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -128,6 +131,14 @@ const ChekiPageBase = ({ firebase }) => {
         })
         return () => unsubscribe();
     }, []);
+
+    function nextPage(lastData) {
+        return ref.startAfter(lastData[lastData.length - 1]).orderBy("date", "desc").limit(LIMIT);
+    }
+
+    function prevPage(lastData) {
+        return ref.endBefore(lastData[0]).orderBy("date", "desc").limit(LIMIT);
+    }
 
     return (
         <Paper>
